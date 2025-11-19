@@ -1,19 +1,19 @@
 import pytest
-from temporal_agent import get_time_activity, list_files_activity
+from tools import get_time, list_files
 from client import generate_workflow_id
 
 
 @pytest.mark.asyncio
-async def test_get_time_activity():
-    result = await get_time_activity()
+async def test_get_time():
+    result = get_time()
     assert len(result) == 19  # YYYY-MM-DD HH:MM:SS format
     assert "-" in result and ":" in result
 
 
 @pytest.mark.asyncio
-async def test_list_files_activity():
-    result = await list_files_activity()
-    assert "Files:" in result
+async def test_list_files():
+    result = list_files()
+    assert "Python files:" in result
     assert ".py" in result
 
 

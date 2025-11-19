@@ -1,47 +1,34 @@
-import os
-from datetime import datetime
 from strands import Agent, tool
 from strands.models.ollama import OllamaModel
-from config import OLLAMA_HOST, OLLAMA_MODEL, WEATHER_TIMEOUT
+from config import OLLAMA_HOST, OLLAMA_MODEL
+from tools import get_time, get_weather, list_files, get_fact
 
 
 @tool
-def get_time() -> str:
-    return datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+def time_tool() -> str:
+    return get_time()
 
 
 @tool
-def list_files() -> str:
-    try:
-        files = [f for f in os.listdir('.') if f.endswith('.py')]
-        return f"Python files: {', '.join(files[:5])}"
-    except Exception as e:
-        return f"File listing error: {str(e)}"
+def weather_tool(city: str) -> str:
+    return get_weather(city)
 
 
 @tool
-def get_weather(city: str) -> str:
-    try:
-        import requests
-        
-        url = f"https://wttr.in/{city}?format=%C+%t"
-        response = requests.get(url, timeout=WEATHER_TIMEOUT)
-        
-        if response.status_code == 200:
-            weather_data = response.text.strip()
-            return f"{city}: {weather_data}"
-        
-        return f"Weather data unavailable for {city}"
-        
-    except Exception as e:
-        return f"Weather service error for {city}: {str(e)}"
+def files_tool() -> str:
+    return list_files()
+
+
+@tool
+def fact_tool(topic: str) -> str:
+    return get_fact(topic, OLLAMA_HOST, OLLAMA_MODEL)
 
 
 def create_agent() -> Agent:
     return Agent(
         model=OllamaModel(host=OLLAMA_HOST, model_id=OLLAMA_MODEL),
-        tools=[get_time, list_files, get_weather],
-        system_prompt="Use available tools to provide accurate, helpful responses."
+        tools=[time_tool, weather_tool, files_tool, fact_tool],
+        system_prompt="Use available tools to provide accurate, helpful responses. Only use tools when necessary."
     )
 
 

@@ -1,6 +1,6 @@
+"""Client for executing Temporal workflows."""
 import asyncio
 import logging
-from datetime import datetime
 from temporalio.client import Client
 from config import TEMPORAL_HOST, TASK_QUEUE
 from temporal_agent import TemporalAgentWorkflow
@@ -10,6 +10,7 @@ logger = logging.getLogger(__name__)
 
 
 def generate_workflow_id(task: str) -> str:
+    """Generate unique workflow ID."""
     import uuid
     return f"agent-workflow-{uuid.uuid4()}"
 
