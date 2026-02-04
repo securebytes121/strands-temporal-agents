@@ -1,11 +1,10 @@
 from strands import Agent
-from strands.models.ollama import OllamaModel
+from strands.models.openai import OpenAIModel
 
-ollama_model = OllamaModel(
-    host="http://localhost:11434",  # Ollama server address
-    model_id="gemma3:1b"               # Specify which model to use
+model = OpenAIModel(
+    api_key="YOUR_API_KEY",
+    model_id="gpt-4o-mini"
 )
 
-agent = Agent(model=ollama_model) # create an instance of Agent
-agent("Hello , how are you?")
-
+agent = Agent(model=model)
+agent("Hello, how are you?")
