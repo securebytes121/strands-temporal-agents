@@ -1,7 +1,9 @@
-# install ollama
-https://ollama.com
+from strands import Agent
+from strands.models.ollama import OllamaModel
 
-ollama pull gemma3:1b
+model = OllamaModel(
+    model_id="gemma3:1b"
+)
 
-pip install strands ollama
-python agent.py
+agent = Agent(model=model)
+print(agent("Hello, how are you?"))
