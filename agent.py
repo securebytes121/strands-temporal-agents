@@ -1,10 +1,7 @@
-from strands import Agent
-from strands.models.openai import OpenAIModel
+# install ollama
+https://ollama.com
 
-model = OpenAIModel(
-    api_key="YOUR_API_KEY",
-    model_id="gpt-4o-mini"
-)
+ollama pull gemma3:1b
 
-agent = Agent(model=model)
-agent("Hello, how are you?")
+pip install strands ollama
+python agent.py
